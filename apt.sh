@@ -153,11 +153,13 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
   #./configure && make -j2 && make install
   #ldconfig
   #cd ..
+  sudo add-apt-repository ppa:chris-lea/libsodium
+  sudo apt-get update && sudo apt-get install -y libsodium-dev
 
-  sudo apt-get install -y software-properties-common
-  sudo bash -c "LC_ALL=C.UTF-8 add-apt-repository -y ppa:ondrej/php"
-  sudo apt-get update
-  sudo apt-get install -y libsodium-dev
+  #sudo apt-get install -y software-properties-common
+  #sudo bash -c "LC_ALL=C.UTF-8 add-apt-repository -y ppa:ondrej/php"
+  #sudo apt-get update
+  #sudo apt-get install -y libsodium-dev
 
   #sudo -H pip install shadowsocks
   #pip install --upgrade git+https://github.com/shadowsocks/shadowsocks.git@master
