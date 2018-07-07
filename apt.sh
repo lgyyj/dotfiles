@@ -148,7 +148,8 @@ echo ""
 read -p "do you want to deploy your own G-F-W vps and use shadowsocks client of python version ? (y/n) " -n 1;
 if [[ $REPLY =~ ^[Yy]$ ]]; then
   #apt-get install build-essential
-  wget https://download.libsodium.org/libsodium/releases/libsodium-1.0.16.tar.gz
+  #wget https://download.libsodium.org/libsodium/releases/libsodium-1.0.16.tar.gz
+  cd sss
   tar xf libsodium-1.0.16.tar.gz && cd libsodium-1.0.16
   ./configure && make -j2 && make install
   ldconfig
