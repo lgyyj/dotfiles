@@ -397,6 +397,14 @@
 
 (setq auto-insert-alist
       (append '(
+                (("\\.org$" . "org header")
+                 nil
+                 "#+HTML_HEAD: <link rel=\"stylesheet\" href=\"http://dakrone.github.io/org.css\" type=\"text/css\" />"
+                 _
+                 ))
+              auto-insert-alist))
+(setq auto-insert-alist
+      (append '(
                 (("\\.h\\'" . "C/C++ header")
                  nil
                  '(c++-mode)
