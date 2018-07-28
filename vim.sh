@@ -38,8 +38,8 @@ mkdir -p $CURRENT_DIR/.vim
 lnif $CURRENT_DIR/.vimrc $HOME/.vimrc
 lnif "$CURRENT_DIR/.vim" "$HOME/.vim"
 lnif "$CURRENT_DIR/.vim/autoload/plug.vim" "$HOME/.vim/autoload/plug.vim"
-lnif "$CURRENT_DIR/.vim/plugged/YouCompleteMe" "$HOME/.vim/plugged/YouCompleteMe"
-lnif "$CURRENT_DIR/.vim/vimrc.bundles.local" "$HOME/.vim/vimrc.bundles.local"
+#lnif "$CURRENT_DIR/.vim/plugged/YouCompleteMe" "$HOME/.vim/plugged/YouCompleteMe"
+#lnif "$CURRENT_DIR/.vim/vimrc.bundles.local" "$HOME/.vim/vimrc.bundles.local"
 
 
 echo -e "\033[40;32m Step3: update/install plugins using Vundle \033[0m"
@@ -56,19 +56,19 @@ vim -u $HOME/.vimrc +PlugInstall! +qall
 export SHELL=$system_shell
 
 
-echo -e "\033[40;32m Step4: compile YouCompleteMe \033[0m"
-echo -e "\033[40;32m It will take a long time, just be patient! \033[0m"
-echo -e "\033[40;32m If error,you need to compile it yourself \033[0m"
-echo -e "\033[40;32m cd $CURRENT_DIR/.vim/plugged/YouCompleteMe/ && python install.py --clang-completer \033[0m"
+#echo -e "\033[40;32m Step4: compile YouCompleteMe \033[0m"
+#echo -e "\033[40;32m It will take a long time, just be patient! \033[0m"
+#echo -e "\033[40;32m If error,you need to compile it yourself \033[0m"
+#echo -e "\033[40;32m cd $CURRENT_DIR/.vim/plugged/YouCompleteMe/ && python install.py --clang-completer \033[0m"
 # cd $CURRENT_DIR/.vim/plugged/YouCompleteMe/
-cd $HOME/.vim/plugged/YouCompleteMe
-git submodule update --init --recursive
-if [ `which clang` ]   # check system clang
-then
-    python install.py --clang-completer --system-libclang   # use system clang
-else
-    python install.py --clang-completer
-fi
+#cd $HOME/.vim/plugged/YouCompleteMe
+#git submodule update --init --recursive
+#if [ `which clang` ]   # check system clang
+#then
+#    python install.py --clang-completer --system-libclang   # use system clang
+#else
+#    python install.py --clang-completer
+#fi
 
 cd $CURRENT_DIR
 

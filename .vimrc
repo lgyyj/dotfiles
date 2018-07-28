@@ -10,8 +10,11 @@ Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'bronson/vim-trailing-whitespace'
 Plug 'rking/ag.vim'
 Plug 'kien/ctrlp.vim'
-Plug 'jiangmiao/auto-pairs'
 Plug 'vim-scripts/DrawIt'
+Plug 'erikzaadi/vim-ansible-yaml'
+
+Plug 'fatih/vim-go', {'for': 'go'}
+Plug 'nsf/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
 
 " themes
 Plug 'tomasr/molokai'
@@ -50,13 +53,22 @@ set wildmode=longest,list,full
 set binary
 set hlsearch                                                 " highlight search
 set noeol                                                    " no end of line at the end of the file
-"set cursorcolumn
-"set cursorline
+set cursorcolumn
+set cursorline
+set completeopt=longest,menu
+set pastetoggle=<leader>2
+
+" Show “invisible” characters
+" set list
+" set list listchars=tab:\¦\                                   " for indentline plugin
+" set listchars=tab:▸\ ,trail:▫
+" set lcs=tab:▸\ ,trail:·,eol:¬,nbsp:_
 
 " tab
 set expandtab                                             " Use spaces instead of tabs and --------> Ctrl+V + Tab]
 set smarttab                                              " Be smart when using tabs ;)
 set shiftround                                            " Round indent to multiple of 'shiftwidth' for > and < commands
+" 1 tab == 4 spaces
 set shiftwidth=4
 set tabstop=4
 
@@ -100,35 +112,95 @@ endif
 " normal mode enter (:) and then get into Command-Line namely C-mode
 " normal mode enter (Q) and then get into multi-Command-Line namely Ex-mode
 
+" This is totally awesome - remap jj to escape in insert mode.  You'll never type jj anyway, so it's great!
 inoremap jj <esc>
 nnoremap JJJJ <nop>
-cnoremap w!!                 %!sudo tee > /dev/null %
 
+map <leader><space>          :FixWhitespace<cr>
+
+" normal no recursive mapping
 nnoremap <leader>p           :CtrlP<CR>
 nnoremap <leader>b           :CtrlPBuffer<CR>
+nnoremap <leader>f           :CtrlPMRU<CR>
 nnoremap <leader>T           :CtrlPClearCache<CR>:CtrlP<CR>
+nnoremap <Leader>aa          :Ag!<space>
+nnoremap <Leader>aw          :Ag! -w<space>
+nnoremap <Leader>aq          :Ag -Q<space>
+nnoremap <Leader>as          :Ag ''<left>
 nnoremap <leader>n           :NERDTreeToggle<CR>
-nnoremap <leader>a           :Ag<SPACE>
-" bind K to grep word under cursor
-nnoremap K                   :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
-noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm  " Remove the Windows ^M - when the encodings gets messed up
-noremap <silent><leader>/    :nohls<CR>             " 去掉搜索高亮
+nnoremap <leader>]           :TagbarToggle<CR>
+
+" Remove the Windows ^M - when the encodings gets messed up
+noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
+
+" Fast saving
+map <Leader>w :w<CR>
+imap <Leader>w <ESC>:w<CR>
+vmap <Leader>w <ESC><ESC>:w<CR>
+
+
+" no recursive normal and visual mode mapping
+noremap <leader>g            :GitGutterToggle<CR>
+noremap <silent><leader>/    :nohls<CR> " 去掉搜索高亮
+noremap <leader>nep          :set noexpandtab<CR>
 noremap <C-h>                <C-w>h
 noremap <C-j>                <C-w>j
 noremap <C-k>                <C-w>k
 noremap <C-l>                <C-w>l
 
-map <leader><space>  :FixWhitespace<cr>
-map <leader>d :bdelete<cr>
+" nomal mapping
+nmap s                       <Plug>(easymotion-s)
+"nmap t                       <Plug>(easymotion-s2)
+nmap <Leader>cp              :!xclip -i -selection clipboard % <CR><CR>
+
+" no listchars
+nmap <Leader>L               :set list!<CR>
+
+
+" command line mode no recursive mode mapping
+cnoremap <C-k>               <t_ku>
+cnoremap <C-a>               <Home>
+cnoremap <C-e>               <End>
+cnoremap w!!                 %!sudo tee > /dev/null %
+
+" visual mode mapping
+vmap v                      <Plug>(expand_region_expand)
+vmap V                      <Plug>(expand_region_shrink)
+vnoremap <                  <gv
+vnoremap >                  >gv
+
+" Close the current buffer (w/o closing the current window)
+map <leader>bd :Bclose<cr>
+
+" Close all the buffers
+map <leader>bda :1,1000 bd!<cr>
+
+" Useful mappings for managing tabs
 map <leader>tn :tabnew<cr>
 map <leader>to :tabonly<cr>
 map <leader>tc :tabclose<cr>
-map <leader>tj :tabnext <cr>
-map <leader>tk :tabprevious <cr>
-map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/  " Opens a new tab with the current buffer's path, S
+map <leader>tm :tabmove
+map <leader>tj :tabnext
+map <leader>tk :tabprevious
 
+" Let 'tl' toggle between this and the last accessed tab
+let g:lasttab = 1
+nmap <Leader>tl :exe "tabn ".g:lasttab<CR>
+au TabLeave * let g:lasttab = tabpagenr()
 
-command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+" Opens a new tab with the current buffer's path
+" Super useful when editing files in the same directory
+map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
+
+" Switch CWD to the directory of the open buffer
+map <leader>cd :cd %:p:h<cr>:pwd<cr>
+
+" Specify the behavior when switching between buffers
+try
+  set switchbuf=useopen,usetab,newtab
+  set stal=2
+catch
+endtry
 
 
 " Go crazy!
@@ -139,7 +211,15 @@ if filereadable(expand("~/.vimrc.local"))
   source ~/.vimrc.local
 endif
 
+
 " =========================> plugins config <===============================================
+" Track the engine.
+" Plugin 'SirVer/ultisnips'
+" Snippets are separated from the engine. Add this if you want them:
+" Plugin 'honza/vim-snippets'
+" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+" git submodule update --init --recursive
+" let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsExpandTrigger       = '<C-j>'
 let g:UltiSnipsJumpForwardTrigger  = '<C-j>'
 let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
@@ -148,17 +228,26 @@ let g:UltiSnipsSnippetsDir         = '~/.vim/UltiSnips'
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
 
-" Use The Silver Searcher https://github.com/ggreer/the_silver_searcher
+" ctrlp.vim
 if executable('ag')
-  " Use Ag over Grep
   set grepprg=ag\ --nogroup\ --nocolor
-
-  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-
-  " ag is fast enough that CtrlP doesn't need to cache
-  let g:ctrlp_use_caching = 0
 endif
+let g:ctrlp_map = '<leader>p'
+let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_custom_ignore = {
+    \ 'dir':  '\v[\/]\.(git|hg|svn|rvm)$',
+    \ 'file': '\v\.(exe|so|dll|zip|tar|tar.gz|pyc)$',
+    \ }
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_working_path_mode=0
+let g:ctrlp_match_window_bottom=1
+let g:ctrlp_max_height=15
+let g:ctrlp_match_window = 'order:ttb,max:20'
+"let g:ctrlp_match_window_reversed=0
+let g:ctrlp_mruf_max=500
+let g:ctrlp_follow_symlinks=1
+
 
 " Automatic commands
 if has("autocmd")
@@ -187,10 +276,7 @@ if has("autocmd")
     autocmd Syntax * call matchadd('Debug', '\W\zs\(NOTE\|INFO\|IDEA\|NOTICE\)')
   endif
 
-  au BufNewFile,BufRead *.erl setf erlang
-  au FileType erlang setlocal errorformat=%f:%l:\ %m
   au BufNewFile,BufRead *.yaml set filetype=yaml.ansible
-
   autocmd BufRead,BufNewFile *.md set filetype=markdown
   autocmd BufRead,BufNewFile *.md set spell
   autocmd BufNewFile,BufRead *.json setfiletype json syntax=javascript " Treat .json files as .js
@@ -201,6 +287,21 @@ if has("autocmd")
   autocmd FileType c,cpp,erlang,go,lua,javascript,python,perl autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
 endif
 
+
+" vimgo {{{
+" 1. vim a.go
+" 2. :GoInstallBinaries
+
+    let g:go_highlight_functions = 1
+    let g:go_highlight_methods = 1
+    let g:go_highlight_structs = 1
+    let g:go_highlight_operators = 1
+    let g:go_highlight_build_constraints = 1
+
+    let g:go_fmt_fail_silently = 1
+    " let g:go_fmt_command = "goimports"
+    " let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
+" }}}
 
 " ======================== UI =======================
 if (&t_Co == 256 || has('gui_running'))
