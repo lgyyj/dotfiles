@@ -77,7 +77,7 @@ apps=(
     libappindicator3-dev
 
     # cool terminal util
-    guake
+    # suggest terminator
 
     # cn input
     ibus-rime
@@ -308,7 +308,6 @@ echo ""
 echo ""
 echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 cecho "!!! now, you can run ===> [ gnome-tweak-tool or unity-tweak-tool ] ===> in the terminal to change the theme and icon :-)" $green
-cecho "!!! now, you can run ===> [ startup ... ] gui app to setup the apps[guake, albert ...] that should run after the system bootstrap :-)" $green
 cecho "!!! [ System Settings -> Text Entry ] add rime and use [shift + command] to switch the input source:-)" $green
 cecho "!!! [ System Settings -> keyboard] adjust speed to fast :-)" $green
 cecho "!!! [ open the keyboard shortcuts menu in Ubuntu1604 Top -> Devices -> Keyboard -> custom...-> keyboard menu -> + ===> " $green
