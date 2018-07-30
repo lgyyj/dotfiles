@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: css2
-# key: css2
+# name: css3
+# key: css3
 # --
 #+HTML_HEAD: <link rel="stylesheet" href="http://dakrone.github.io/org2.css" type="text/css" />
