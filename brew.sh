@@ -61,6 +61,9 @@ fi
 # 使用 brew services start|stop|restart SERVICE_NAME 这样的命令来操作一切终端服务了 <=> LaunchRocket
 brew tap homebrew/services
 
+# 使用 brew cu 升级 brew cask 安装的 gui 软件 or brew reinstall someGuiApp
+brew tap buo/cask-upgrade
+
 # Install command-line tools using Homebrew.
 # Ask for the administrator password upfront.
 # sudo -v
@@ -311,6 +314,11 @@ fi;
 read -p "install oh-my-zsh ? [y/n]" -n 1;
 if [[ $REPLY =~ ^[Yy]$ ]]; then
   sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
+fi;
+
+read -p "install popcorn time - a very very cool movie player online !!!!!!!!!" -n 1;
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+  sh -c "$(wget https://raw.githubusercontent.com/popcorn-official/popcorn-desktop/development/make_popcorn.sh -O -)"
 fi;
 
 sudo touch /etc/sysctl.conf

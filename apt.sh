@@ -239,6 +239,10 @@ EOF
   fi
 fi
 
+read -p "install popcorn time - a very very cool movie player online !!!!!!!!!" -n 1;
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+  sh -c "$(wget https://raw.githubusercontent.com/popcorn-official/popcorn-desktop/development/make_popcorn.sh -O -)"
+fi;
 
 echo ""
 echo ""
