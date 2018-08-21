@@ -27,11 +27,11 @@
 
 ;;; Standard package repositories
 
-;(setq package-archives '(("gnu"   . "http://elpa.emacs-china.org/gnu/")
-;                         ("melpa" . "http://elpa.emacs-china.org/melpa/")))
-(setq package-archives '(("gnu"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
-                         ("marmalade" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
-                         ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
+(setq package-archives '(("gnu"   . "http://elpa.emacs-china.org/gnu/")
+                         ("melpa" . "http://elpa.emacs-china.org/melpa/")))
+;(setq package-archives '(("gnu"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
+;                         ("marmalade" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
+;                         ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
 
 
 ;;; Pin some packages to specific repositories.

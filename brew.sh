@@ -212,6 +212,9 @@ brew install pdf-tools
 brew install mpv --with-bundle
 brew linkapps mpv
 
+# cool movies download
+brew install youtube-dl
+
 # for shadowsocks
 brew install libsodium
 # Remove outdated versions from the cellar.
