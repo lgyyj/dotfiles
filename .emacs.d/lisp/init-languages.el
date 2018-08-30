@@ -289,11 +289,6 @@
              (add-hook 'cider-repl-mode-hook #'paredit-mode)
              (add-hook 'cider-repl-mode-hook #'rainbow-delimiters-mode)
 
-             ;; result prefix for the REPL
-             (cider-repl-result-prefix "; => ")
-             ;; nicer font lock in REPL
-             (cider-repl-use-clojure-font-lock t)
-
              (setq nrepl-log-messages t)
              ;; go right to the REPL buffer when it's finished connecting
              (setq cider-repl-pop-to-buffer-on-connect t)
