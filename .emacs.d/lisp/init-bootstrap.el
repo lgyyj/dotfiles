@@ -51,6 +51,9 @@
 (setq split-height-threshold nil)
 (setq gc-cons-threshold 100000000) ;; This makes my Emacs startup time ~35% faster.
 
+;; No need for ~ files when editing
+(setq create-lockfiles nil)
+
 (setq-default left-fringe-width nil)
 (eval-after-load "vc" '(setq vc-handled-backends nil))
 (defalias 'yes-or-no-p 'y-or-n-p)

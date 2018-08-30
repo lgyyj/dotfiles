@@ -275,20 +275,113 @@
 ;; clojure
 ;;----------------------------------------------------------------------------
 (use-package clojure-mode
-  :ensure t
-  :config
-  (add-hook 'clojure-mode-hook #'paredit-mode)
-  (add-hook 'clojure-mode-hook #'subword-mode)
-  (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode))
+             :ensure t
+             :config
+             (add-hook 'clojure-mode-hook #'paredit-mode)
+             (add-hook 'clojure-mode-hook #'subword-mode)
+             (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode))
 
 (use-package cider
-  :ensure t
-  :config
-  (setq nrepl-log-messages t)
-  (add-hook 'cider-mode-hook #'eldoc-mode)
-  (add-hook 'cider-repl-mode-hook #'eldoc-mode)
-  (add-hook 'cider-repl-mode-hook #'paredit-mode)
-  (add-hook 'cider-repl-mode-hook #'rainbow-delimiters-mode))
+             :ensure t
+             :config
+             (add-hook 'cider-mode-hook #'eldoc-mode)
+             (add-hook 'cider-repl-mode-hook #'eldoc-mode)
+             (add-hook 'cider-repl-mode-hook #'paredit-mode)
+             (add-hook 'cider-repl-mode-hook #'rainbow-delimiters-mode)
+
+             (setq nrepl-log-messages t)
+             ;; go right to the REPL buffer when it's finished connecting
+             (setq cider-repl-pop-to-buffer-on-connect t)
+
+             ;; When there's a cider error, show its buffer and switch to it
+             (setq cider-show-error-buffer t)
+             (setq cider-auto-select-error-buffer t)
+
+             ;; Where to store the cider history.
+             (setq cider-repl-history-file "~/.emacs.d/cider-history")
+
+             ;; Wrap when navigating history.
+             (setq cider-repl-wrap-history t))
+
+(use-package clj-refactor
+             :ensure t
+             :config
+             (defun cljr-mode-hook ()
+               (clj-refactor-mode 1)
+               (yas-minor-mode 1) ; for adding require/use/import statements
+               ;; This choice of keybinding leaves cider-macroexpand-1 unbound
+               (cljr-add-keybindings-with-prefix "C-c C-m")
+               (define-key clojure-mode-map (kbd "C-c M-RET") 'cider-macroexpand-1))
+             (add-hook 'clojure-mode-hook #'cljr-mode-hook))
+
+(use-package clojure-mode-extra-font-locking
+             :ensure t
+             :config
+             ;; syntax hilighting for midje
+             (add-hook 'clojure-mode-hook
+                       (lambda ()
+                         (setq inferior-lisp-program "lein repl")
+                         (font-lock-add-keywords
+                           nil
+                           '(("(\\(facts?\\)"
+                              (1 font-lock-keyword-face))
+                             ("(\\(background?\\)"
+                              (1 font-lock-keyword-face))))
+                         (define-clojure-indent (fact 1))
+                         (define-clojure-indent (facts 1)))))
+
+; key bindings
+; these help me out with the way I usually develop web apps
+(defun cider-start-http-server ()
+  (interactive)
+  (cider-load-current-buffer)
+  (let ((ns (cider-current-ns)))
+    (cider-repl-set-ns ns)
+    (cider-interactive-eval (format "(println '(def server (%s/start))) (println 'server)" ns))
+    (cider-interactive-eval (format "(def server (%s/start)) (println server)" ns))))
+
+
+(defun cider-refresh ()
+  (interactive)
+  (cider-interactive-eval (format "(user/reset)")))
+
+(defun cider-user-ns ()
+  (interactive)
+  (cider-repl-set-ns "user"))
+
+(eval-after-load 'cider
+  '(progn
+     (define-key clojure-mode-map (kbd "C-c C-v") 'cider-start-http-server)
+     (define-key clojure-mode-map (kbd "C-M-r") 'cider-refresh)
+     (define-key clojure-mode-map (kbd "C-c u") 'cider-user-ns)
+     (define-key cider-mode-map (kbd "C-c u") 'cider-user-ns)))
+
+(defun my/set-cljs-repl-figwheel ()
+  (setq cider-cljs-lein-repl "(do (use 'figwheel-sidecar.repl-api) (start-figwheel!) (cljs-repl))"))
+
+(defun my/cider-figwheel-repl ()
+  (interactive)
+  (save-some-buffers)
+  (with-current-buffer (cider-current-repl-buffer)
+    (goto-char (point-max))
+    (insert "(require 'figwheel-sidecar.repl-api)
+             (figwheel-sidecar.repl-api/start-figwheel!)
+             (figwheel-sidecar.repl-api/cljs-repl)")
+    (cider-repl-return)))
+
+(global-set-key (kbd "C-c C-f") #'my/cider-figwheel-repl)
+
+(defun my/set-cljs-repl-rhino ()
+  (setq cider-cljs-lein-repl "rhino"))
+
+(defun my/start-cider-repl-with-profile (profile)
+  (interactive "sEnter profile name: ")
+  (letrec ((lein-params (concat "with-profile +" profile " repl :headless")))
+    (message "lein-params set to: %s" lein-params)
+    (set-variable 'cider-lein-parameters lein-params)
+    (cider-jack-in)
+    (set-variable 'cider-lein-parameters "repl :headless")))
+
 
 ;;----------------------------------------------------------------------------
 ;; other programming languages
