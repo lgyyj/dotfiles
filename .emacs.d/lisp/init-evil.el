@@ -36,7 +36,11 @@
     "p"  'helm-show-kill-ring
     "P"   'projectile-find-file-other-window
     "s"  'ag-project            ;; Ag search from project's root
-    "r"  'chrome-reload
+    ;"rs" 'cider-start-http-server
+    "rs" 'cider-jack-in
+    "rr" 'cider-refresh
+    "re" 'cider-macroexpand-1
+    "ru" 'cider-user-ns
     "R"  (lambda () (interactive) (font-lock-fontify-buffer) (redraw-display))
     "S"  'delete-trailing-whitespace
     "t"  'gtags-reindex
