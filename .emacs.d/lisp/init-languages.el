@@ -296,6 +296,7 @@
 
 (use-package cider
              :ensure t
+             :commands (cider cider-connect cider-jack-in)
              :config
              (add-hook 'cider-mode-hook #'eldoc-mode)
              (add-hook 'cider-repl-mode-hook #'eldoc-mode)
@@ -312,8 +313,10 @@
              ;; Where to store the cider history.
              (setq cider-repl-history-file "~/.emacs.d/cider-history")
 
+             (setq nrepl-popup-stacktraces nil)
              ;; Wrap when navigating history.
              (setq cider-repl-wrap-history t))
+
 
 (use-package clj-refactor
              :ensure t

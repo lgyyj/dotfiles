@@ -39,13 +39,13 @@
 
 (package-initialize) ;; You might already have this line
 
-
-;; proxy
-;;(setq url-proxy-services '(
-;;        ("no_proxy" . "^\\(localhost\\|10.*\\)")
-;;        ("http" . "127.0.0.1:8123")
-;;        ("https" . "127.0.0.1:8123")
-;;))
+(defun zz/set-proxy ()
+  (interactive)
+  (customize-set-variable 'url-proxy-services '(("http"  . "127.0.0.1:8123")
+                                                ("https" . "127.0.0.1:8123"))))
+(defun zz/unset-proxy ()
+  (interactive)
+  (customize-set-variable 'url-proxy-services nil))
 
 ;;; auto install use-package
 (unless (package-installed-p 'use-package)
