@@ -302,7 +302,7 @@
              (add-hook 'cider-repl-mode-hook #'paredit-mode)
              (add-hook 'cider-repl-mode-hook #'rainbow-delimiters-mode)
 
-             (setq nrepl-log-messages t)
+             ;(setq nrepl-log-messages t)
              ;; go right to the REPL buffer when it's finished connecting
              (setq cider-repl-pop-to-buffer-on-connect t)
              ;; When there's a cider error, show its buffer and switch to it
