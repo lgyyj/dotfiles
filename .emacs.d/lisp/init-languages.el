@@ -316,7 +316,7 @@
              (add-hook 'cider-repl-mode-hook #'rainbow-delimiters-mode)
              :custom
              ;; nice pretty printing
-             (cider-repl-use-pretty-printing nil)
+             (cider-repl-use-pretty-printing t)
              ;; nicer font lock in REPL
              (cider-repl-use-clojure-font-lock t)
              ;; result prefix for the REPL
