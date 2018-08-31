@@ -290,12 +290,24 @@
 (use-package clojure-mode
              :ensure t
              :config
+             (add-hook 'clojure-mode-hook #'my-clj-refactor-mode-hook)
              (add-hook 'clojure-mode-hook #'paredit-mode)
              (add-hook 'clojure-mode-hook #'subword-mode)
              (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode))
 
 
 (use-package cider
+             :config
+             (setq nrepl-popup-stacktraces nil)
+             (add-hook 'cider-mode-hook 'eldoc-mode)
+             (add-hook 'cider-mode-hook #'rainbow-delimiters-mode)
+             ;; Replace return key with newline-and-indent when in cider mode.
+             (add-hook 'cider-mode-hook '(lambda () (local-set-key (kbd "RET") 'newline-and-indent)))
+             (add-hook 'cider-mode-hook #'company-mode)
+             (add-hook 'cider-repl-mode-hook 'subword-mode)
+             (add-hook 'cider-repl-mode-hook 'paredit-mode)
+             (add-hook 'cider-repl-mode-hook #'company-mode)
+             (add-hook 'cider-repl-mode-hook #'rainbow-delimiters-mode)
              :custom
              ;; nice pretty printing
              (cider-repl-use-pretty-printing nil)
@@ -314,15 +326,14 @@
              ;; go right to the REPL buffer when it's finished connecting
              (cider-repl-pop-to-buffer-on-connect t))
 
-(use-package clj-refactor
-             :config
-             (defun my-clojure-mode-hook ()
-               (clj-refactor-mode 1)
-               (yas-minor-mode 1) ; for adding require/use/import statements
-               ;; This choice of keybinding leaves cider-macroexpand-1 unbound
-               (cljr-add-keybindings-with-prefix "C-c C-m"))
-             :hook
-             (clojure-mode . my-clojure-mode-hook))
+(use-package clj-refactor :ensure t)
+(require 'clj-refactor)
+(defun my-clojure-mode-hook ()
+    (clj-refactor-mode 1)
+    (yas-minor-mode 1) ; for adding require/use/import statements
+    ;; This choice of keybinding leaves cider-macroexpand-1 unbound
+    (cljr-add-keybindings-with-prefix "C-c C-m"))
+(add-hook 'clojure-mode-hook #'my-clojure-mode-hook)
 
 (use-package clojure-mode-extra-font-locking
              :ensure t
