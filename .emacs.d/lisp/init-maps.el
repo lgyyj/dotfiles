@@ -17,6 +17,9 @@
 (global-set-key [M-up] 'shrink-window)
 (global-set-key [M-down] 'enlarge-window)
 
+;; 动态调整字体大小:
+;; C-x C-+
+;; C-x C--
 (global-set-key (kbd "C-c <left>")  'windmove-left)
 (global-set-key (kbd "C-c <right>") 'windmove-right)
 (global-set-key (kbd "C-c <up>")    'windmove-up)
