@@ -139,7 +139,7 @@ leader is ","
 
 ```
 3.1 分屏
-(global-set-key (kbd "C-x 2") 'vsplit-last-buffer)  
+(global-set-key (kbd "C-x 2") 'vsplit-last-buffer)
 (global-set-key (kbd "C-x 3") 'hsplit-last-buffer)
 
 3.2 调整分屏的大小
@@ -162,15 +162,17 @@ leader is ","
 
 修改 lisp/init-languages.el
 
-1. Erlang 部分， 自行适配路径， 版本
-2. Golang 部分， 自行安装依赖
+1. Erlang 部分， 自行适配路径， 版本, 主要用来写,网络协议解析, 分布式系统， 软实时消息系统
+2. Golang 部分， 自行安装依赖, 主要用来写一些简单的项目
     go get github.com/rogpeppe/godef
     go get -u github.com/golang/lint/golint
     go get -u github.com/nsf/gocode
-3. Lua
-4. js/es7
-5. c
-6. racket
+3. Clojure 部分， 主要用来写 DSL
+4. Lua 主要用在 Openresty 的web开发
+4. js/es7 开发前端
+6. c 嵌入式开发
+7. shell + python 用来写一些脚本
+8. 不再使用的语言： c++， java
 
 
 enjoy it!
