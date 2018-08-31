@@ -287,6 +287,13 @@
 ;; M-. 可以查看函数的源代码。
 ;; M-, 用来查看第三方库
 ;;----------------------------------------------------------------------------
+(use-package clj-refactor :ensure t)
+(require 'clj-refactor)
+(defun my-clj-refactor-mode-hook ()
+    (clj-refactor-mode 1)
+    (yas-minor-mode 1) ; for adding require/use/import
+    (cljr-add-keybindings-with-prefix "C-c C-m"))
+
 (use-package clojure-mode
              :ensure t
              :config
@@ -294,7 +301,6 @@
              (add-hook 'clojure-mode-hook #'paredit-mode)
              (add-hook 'clojure-mode-hook #'subword-mode)
              (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode))
-
 
 (use-package cider
              :config
@@ -325,15 +331,6 @@
              (cider-show-error-buffer nil)
              ;; go right to the REPL buffer when it's finished connecting
              (cider-repl-pop-to-buffer-on-connect t))
-
-(use-package clj-refactor :ensure t)
-(require 'clj-refactor)
-(defun my-clojure-mode-hook ()
-    (clj-refactor-mode 1)
-    (yas-minor-mode 1) ; for adding require/use/import statements
-    ;; This choice of keybinding leaves cider-macroexpand-1 unbound
-    (cljr-add-keybindings-with-prefix "C-c C-m"))
-(add-hook 'clojure-mode-hook #'my-clojure-mode-hook)
 
 (use-package clojure-mode-extra-font-locking
              :ensure t
