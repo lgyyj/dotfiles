@@ -16,8 +16,15 @@
   ;; setting font for mac system
   ;; -----------------------------------------------------------------------------
 
-  ;; font size
-  (set-face-attribute 'default nil :height 140)
+  ;; from 谷歌的哥们: http://icodeilife.com/cs.html#sec-4-1
+  ;; Chinese Font
+(dolist (charset '(kana han symbol cjk-misc bopomofo))
+  (set-fontset-font (frame-parameter nil 'font)
+                    charset
+                    (font-spec :family "Microsoft Yahei")))
+
+;; font size
+(set-face-attribute 'default nil :height 140)
 
   ; Set default font
   ;(set-face-attribute 'default nil

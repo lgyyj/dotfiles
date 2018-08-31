@@ -140,20 +140,6 @@
                          htmlize-many-files-dired
                          htmlize-region))
 
-(use-package org-page
-             :ensure t
-             :defer t
-             )
-(setq op/repository-directory "~/githubs/myblog")
-(setq op/site-domain "http://robertzhouxh.github.io")
-(setq op/personal-github-link "https://github.com/robertzhouxh")
-(setq op/site-main-title "zxh @ Home")
-(setq op/site-sub-title "Emacs, Programming, and Arch Linux")
-(setq op/personal-disqus-shortname "robertzhouxh-github-io")
-
-(setq op/theme-root-directory "~/githubs/dotfiles/.emacs.d/themes/")
-;(setq op/personal-avatar "https://avatars0.githubusercontent.com/u/75674?v=3&s=460")
-(setq op/personal-google-analytics-id "userid_of_google_analytics")
 
 ; cd .emacs.d ; cd elpa ; cd org-20161102 ; rm *.elc
 ; https://www.websequencediagrams.com/examples.html
@@ -165,6 +151,21 @@
 
 (eval-after-load "org"
   '(require 'ox-md nil t))
+
+;; export to html5 ===> https://gist.github.com/kinjo/509761
+(add-to-list 'load-path "~/.emacs.d/vendor/org-html5presentation.el")
+(defun org-export-get-headline-id (headline info)
+  "Return a unique ID for HEADLINE.
+INFO is a plist holding contextual information."
+  (let ((numbered (org-export-numbered-headline-p headline info)))
+    (concat
+     (if numbered "sec-" "unnumbered-")
+     (mapconcat #'number-to-string
+               (if numbered
+                   (org-export-get-headline-number headline info)
+                 (cdr (assq headline (plist-get info :unnumbered-headline-id)))) "-"))))
+(require 'ox)
+(require 'ox-html5presentation)
 
 (provide 'init-org)
 ;;; init-org.el ends here
