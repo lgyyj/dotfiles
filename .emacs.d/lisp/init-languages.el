@@ -294,40 +294,35 @@
              (add-hook 'clojure-mode-hook #'subword-mode)
              (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode))
 
+
 (use-package cider
-             :ensure t
-             :commands (cider cider-connect cider-jack-in)
-             :config
-             (add-hook 'cider-mode-hook #'eldoc-mode)
-             (add-hook 'cider-repl-mode-hook #'eldoc-mode)
-             (add-hook 'cider-repl-mode-hook #'paredit-mode)
-             (add-hook 'cider-repl-mode-hook #'rainbow-delimiters-mode)
-
-             ;(setq nrepl-log-messages t)
+             :custom
+             ;; nice pretty printing
+             (cider-repl-use-pretty-printing nil)
+             ;; nicer font lock in REPL
+             (cider-repl-use-clojure-font-lock t)
+             ;; result prefix for the REPL
+             (cider-repl-result-prefix "; => ")
+             ;; never ending REPL history
+             (cider-repl-wrap-history t)
+             ;; looong history
+             (cider-repl-history-size 5000)
+             ;; persistent history
+             (cider-repl-history-file "~/.emacs.d/cider-history")
+             ;; error buffer not popping up
+             (cider-show-error-buffer nil)
              ;; go right to the REPL buffer when it's finished connecting
-             (setq cider-repl-pop-to-buffer-on-connect t)
-             ;; When there's a cider error, show its buffer and switch to it
-             (setq cider-show-error-buffer t)
-             (setq cider-auto-select-error-buffer t)
-
-             ;; Where to store the cider history.
-             (setq cider-repl-history-file "~/.emacs.d/cider-history")
-
-             (setq nrepl-popup-stacktraces nil)
-             ;; Wrap when navigating history.
-             (setq cider-repl-wrap-history t))
-
+             (cider-repl-pop-to-buffer-on-connect t))
 
 (use-package clj-refactor
-             :ensure t
              :config
-             (defun cljr-mode-hook ()
+             (defun my-clojure-mode-hook ()
                (clj-refactor-mode 1)
                (yas-minor-mode 1) ; for adding require/use/import statements
                ;; This choice of keybinding leaves cider-macroexpand-1 unbound
-               (cljr-add-keybindings-with-prefix "C-c C-m")
-               (define-key clojure-mode-map (kbd "C-c M-RET") 'cider-macroexpand-1))
-             (add-hook 'clojure-mode-hook #'cljr-mode-hook))
+               (cljr-add-keybindings-with-prefix "C-c C-m"))
+             :hook
+             (clojure-mode . my-clojure-mode-hook))
 
 (use-package clojure-mode-extra-font-locking
              :ensure t
