@@ -288,16 +288,9 @@
 ;; M-, 用来查看第三方库
 ;;----------------------------------------------------------------------------
 (use-package clj-refactor :ensure t)
-(require 'clj-refactor)
-(defun my-clj-refactor-mode-hook ()
-    (clj-refactor-mode 1)
-    (yas-minor-mode 1) ; for adding require/use/import
-    (cljr-add-keybindings-with-prefix "C-c C-m"))
-
 (use-package clojure-mode
              :ensure t
              :config
-             (add-hook 'clojure-mode-hook #'my-clj-refactor-mode-hook)
              (add-hook 'clojure-mode-hook #'paredit-mode)
              (add-hook 'clojure-mode-hook #'subword-mode)
              (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode))
@@ -358,7 +351,6 @@
     (cider-interactive-eval (format "(println '(def server (%s/start))) (println 'server)" ns))
     (cider-interactive-eval (format "(def server (%s/start)) (println server)" ns))))
 
-
 (defun cider-refresh ()
   (interactive)
   (cider-interactive-eval (format "(user/reset)")))
@@ -373,6 +365,15 @@
      (define-key clojure-mode-map (kbd "C-M-r") 'cider-refresh)
      (define-key clojure-mode-map (kbd "C-c u") 'cider-user-ns)
      (define-key cider-mode-map (kbd "C-c u") 'cider-user-ns)))
+
+(require 'clj-refactor)
+(defun cljr-mode-hook ()
+    (clj-refactor-mode 1)
+    (yas-minor-mode 1) ; for adding require/use/import statements
+    ;; This choice of keybinding leaves cider-macroexpand-2 unbound
+    (cljr-add-keybindings-with-prefix "C-c C-m")
+    (define-key clojure-mode-map (kbd "C-c M-RET") 'cider-macroexpand-1))
+(add-hook 'clojure-mode-hook #'cljr-mode-hook)
 
 (defun my/set-cljs-repl-figwheel ()
   (setq cider-cljs-lein-repl "(do (use 'figwheel-sidecar.repl-api) (start-figwheel!) (cljs-repl))"))
@@ -400,6 +401,20 @@
     (cider-jack-in)
     (set-variable 'cider-lein-parameters "repl :headless")))
 
+(require 'clojure-mode)
+(define-clojure-indent
+  (defroutes 'defun)
+  (GET 2)
+  (POST 2)
+  (PUT 2)
+  (DELETE 2)
+  (HEAD 2)
+  (ANY 2)
+  (OPTIONS 2)
+  (PATCH 2)
+  (rfn 2)
+  (let-routes 1)
+  (context 2))
 
 ;;----------------------------------------------------------------------------
 ;; other programming languages
