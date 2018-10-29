@@ -41,6 +41,8 @@
     "rr" 'cider-refresh
     "re" 'cider-macroexpand-1
     "ru" 'cider-user-ns
+    "rn" 'cider-repl-set-ns
+    "rx" 'cider-eval-last-sexp
     "R"  (lambda () (interactive) (font-lock-fontify-buffer) (redraw-display))
     "S"  'delete-trailing-whitespace
     "t"  'gtags-reindex

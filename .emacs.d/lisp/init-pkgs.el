@@ -251,7 +251,7 @@
 ;             (progn
 ;               (defvar esk-dash-docsets
 ;                 ;'("Bash" "C" "C++" "Go" "Redis" "Ansible" "UnderscoreJS" "JavaScript" "React"))
-;                 '("Bash" "Go"))
+;                 '("Bash" "Go" "Clojure"))
 ;
 ;               (defun esk-helm-dash-install (docset-name)
 ;                 (message (format "Installing helm-dash docset '%s'" docset-name))
@@ -263,6 +263,7 @@
 ;
 ;               (defun helm-dash-bash () (esk-dash-limit '("Bash")))
 ;               (defun helm-dash-go () (esk-dash-limit '("Go" "Redis")))
+;               (defun helm-dash-clojure () (esk-dash-limit '("Clojure")))
 ;               (defun helm-dash-yaml () (esk-dash-limit '("Ansible")))
 ;               (defun helm-dash-c () (esk-dash-limit '("c")))
 ;               (defun helm-dash-web () (esk-dash-limit '("UnderscoreJS" "JavaScript" "React")))
@@ -272,6 +273,7 @@
 ;                 (setq helm-dash-docsets-path "~/.emacs.d/docsets/")
 ;                 (after sh-script (add-hook 'sh-mode-hook 'helm-dash-bash))
 ;                 (after go-mode (add-hook 'go-mode-hook 'helm-dash-go))
+;                 (after clojure-mode (add-hook 'clojure-mode-hook 'helm-dash-clojure))
 ;                 ;(after yaml-mode (add-hook 'yaml-mode-hook 'helm-dash-yaml))
 ;                 ;(after c-mode (add-hook 'c-mode-hook 'helm-dash-c))
 ;                 ;(after web-mode (add-hook 'web-mode-hook 'helm-dash-web))

@@ -39,13 +39,8 @@
 
 (package-initialize) ;; You might already have this line
 
-(defun zz/set-proxy ()
-  (interactive)
-  (customize-set-variable 'url-proxy-services '(("http"  . "127.0.0.1:8123")
-                                                ("https" . "127.0.0.1:8123"))))
-(defun zz/unset-proxy ()
-  (interactive)
-  (customize-set-variable 'url-proxy-services nil))
+;(setq url-proxy-services `(("http" . "127.0.0.1:8123")
+;                           ("https" . "127.0.0.1:8123")))
 
 ;;; auto install use-package
 (unless (package-installed-p 'use-package)
@@ -56,6 +51,22 @@
 
 (eval-when-compile
   (require 'use-package))
+
+;(use-package proxy-mode
+;  :init
+;  (define-globalized-minor-mode global-proxy-mode proxy-mode proxy-mode)
+;  (setq proxy-mode-http-proxy "http://127.0.0.1:8123")
+;  (setq proxy-mode-socks-proxy '("Default server" "127.0.0.1" 1080 5))
+;
+;  (setq proxy-mode-url-proxy '(("http"  . "127.0.0.1:8123")
+;                               ("https" . "127.0.0.1:8123")
+;                               ("ftp"   . "127.0.0.1:8123")
+;                               ;; don't use `localhost', avoid robe server (For Ruby) can't response.
+;                               ("no_proxy" . "127.0.0.1")
+;                               ("no_proxy" . "^.*\\(baidu\\|sina)\\.com")))
+;
+;  (setq url-gateway-local-host-regexp
+;        (concat "\\`" (regexp-opt '("localhost" "127.0.0.1")) "\\'")))
 
 ;;; My own configurations, which are bundled in my dotfiles.
 (require 'init-bootstrap)
